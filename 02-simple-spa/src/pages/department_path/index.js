@@ -7,13 +7,15 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 const DepartmentPath = () => {
-  // 요청 데이터 확인하기
+  // useParams 훅을 사용하여 URL 경로에서 파라미터를 추출함
   const params = useParams();
+
+  // 추출된 파라미터 값을 콘솔에 출력하여 확인
   console.group("useParams()의 리턴값 확인");
   console.debug(params);
   console.groupEnd();
 
-  // 필요한 변수값과 타입 확인
+  // 추출된 파라미터의 값과 타입을 콘솔에 출력하여 확인
   console.debug("요청된 학과번호 값=%s (%s)", params.id, typeof params.id);
   console.debug("요청된 메시지 내용=%s (%s)", params.msg, typeof params.msg);
   console.groupEnd();
@@ -27,6 +29,7 @@ const DepartmentPath = () => {
     ],
   };
 
+  // 추출된 학과번호에 해당하는 학과 정보를 찾음
   const departmentItem = departmentList.item.find((v, i) => v.id === parseInt(params.id));
 
   // 조회 결과가 없는 경우
@@ -34,6 +37,7 @@ const DepartmentPath = () => {
     return <h3>조회된 학과가 없습니다.</h3>;
   }
 
+  // 조회 결과가 있는 경우 해당 학과 정보를 화면에 출력
   return (
     <div>
       <h1>DepartmentPath</h1>
