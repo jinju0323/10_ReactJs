@@ -2,7 +2,7 @@ import React from "react";
 // SEO 처리 기능 패키지
 import { Helmet, HelmetProvider } from "react-helmet-async";
 // 미리보기 이미지 샘플
-import sample from "./assets/img/sample.jpg";
+import sample from "../components/img/sample.jpg";
 
 const Meta =
   () =>
