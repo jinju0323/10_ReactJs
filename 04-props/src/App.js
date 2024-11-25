@@ -22,7 +22,7 @@ const App = () => {
         <Link to="/myprops">MyProps</Link>&nbsp;|&nbsp;
         <Link to="/myproptypes">MyPropsTypes</Link>&nbsp;|&nbsp;
         <Link to="/mychildren">MyChildren</Link>&nbsp;|&nbsp;
-        <Link to="/gradetable">GradeTable(demo)</Link>
+        <Link to="/grade_table">GradeTable(demo)</Link>
       </nav>
       <hr />
 
@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/myprops" element={<MyProps />} />
         <Route path="/myproptypes" element={<MyPropTpyes />} />
         <Route path="/mychildren" element={<MyChildren />} />
-        <Route path="/gradetable" element={<GradeTable />} />
+        <Route path="/grade_table" element={<GradeTable />} />
       </Routes>
     </>
   );
