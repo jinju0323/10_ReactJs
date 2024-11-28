@@ -1,12 +1,9 @@
-/**
- * useMemo를 사용
- */
-import React, { memo, useCallback, useState, useMemo } from "react";
+/*
+* useState만 사용한 경우
+*/
+import React, { memo, useCallback, useState } from "react";
 
 import styled from "styled-components";
-
-// CSS 클래스 조건부로 적용할 수 있는 패키지
-import classnames from "classnames";
 
 import { tabContent } from "../../dataset";
 
@@ -47,16 +44,20 @@ const TabEx = memo(() => {
   const onTabButtonClick = useCallback((e) => {
     e.preventDefault();
 
+    //순서 JS코드인 경우
+    // document.querySelectorAll(".tab-button").forEach((v, i) => {
+    //   if (e.currentTarget == v) {
+    //     v.classList.add("active");
+    //   } else {
+    //     v.classList.remove("active");
+    //   }
+    // });
+
     // 클릭 된 링크의 data-index 속성값을 상태변수에 반영
     const index = e.currentTarget.dataset.index;
-    console.log("before --> ", index);
+    console.log(index);
     setTabIndex(index);
-    console.log("after --> ", index);
   }, []);
-
-  const { subject, content } = useMemo(() => {
-    return tabContent[tabIndex];
-  }, [tabIndex]);
 
   return (
     <TabExContainer>
@@ -64,24 +65,26 @@ const TabEx = memo(() => {
       {/* Tab버튼 그룹 */}
       <div className="tab-button-group">
         {tabContent.map((v, i) => {
-          // 조건부 class이름 만들기
-          const mycls = classnames({
-            "tab-button": true,
-            active: tabIndex == i,
-          });
-
-          return (
-            <a key={i} href={`#${v.id}`} data-index={i} className={mycls} onClick={onTabButtonClick}>
-              {v.subject}
-            </a>
-          );
+          if (tabIndex == i) {
+            return (
+              <a key={i} href={`#${v.id}`} data-index={i} className="active tab-button" onClick={onTabButtonClick}>
+                {v.subject}
+              </a>
+            );
+          } else {
+            return (
+              <a key={i} href={`#${v.id}`} data-index={i} className="tab-button" onClick={onTabButtonClick}>
+                {v.subject}
+              </a>
+            );
+          }
         })}
       </div>
 
       {/* Tab 페이지 그룹 */}
       <div className="tab-page">
-        <h3>{subject}</h3>
-        <p>{content}</p>
+        <h3>{tabContent[tabIndex].subject}</h3>
+        <p>{tabContent[tabIndex].content}</p>
       </div>
     </TabExContainer>
   );
