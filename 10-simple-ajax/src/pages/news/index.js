@@ -5,7 +5,7 @@ import NewsList from "./NewsList";
 import axios from "axios";
 import axiosHelper from "../../helpers/AxiosHelper";
 
-// import NewsData from "../../data/NewsData";}
+// import NewsData from "../../data/NewsData";
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
