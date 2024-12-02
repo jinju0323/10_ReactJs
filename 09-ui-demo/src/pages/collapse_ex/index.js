@@ -5,9 +5,15 @@ import styled from "styled-components";
 import { collapseContent } from "../../dataset";
 
 const CollapseExContainer = styled.div`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   .collapse-title {
-    background-color: #f1f1f1;
-    color: black;
+    background-color: #777;
+    color: white;
     cursor: pointer;
     padding: 22px;
     box-sizing: border-box;
@@ -15,12 +21,12 @@ const CollapseExContainer = styled.div`
     font-size: 16px;
 
     &:hover {
-      background-color: #ddd;
+      background-color: #555;
     }
 
     /** 현재 열러 있는 항목을 표시하기 위한 클래스 */
     &.active {
-      background-color: #ddd;
+      background-color: #222;
     }
   }
 
@@ -31,7 +37,6 @@ const CollapseExContainer = styled.div`
     p {
       padding: 20px 40px;
       margin: 0;
-      height: auto;
     }
 
     height: 0;
@@ -69,7 +74,9 @@ const CollapseEx = memo(() => {
             <h1 className="collapse-title" onClick={onCollapseTitleClick}>
               {title}
             </h1>
-            <h1 className="collapse-content">{content}</h1>
+            <h1 className="collapse-content">
+              <p>{content}</p>
+            </h1>
           </div>
         );
       })}
