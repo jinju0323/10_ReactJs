@@ -9,11 +9,11 @@ import MenuLink from "./components/MenuLink";
 /** SEO 설정 */
 import Meta from "./components/Meta";
 /** 전역 SCSS 적용을 위한 reset.css와 StyledComponent */
-import { Reset } from "styled-reset";
 import GlobalStyles from "./components/GlobalStyles";
 
 /** 하위 페이지를 담당하는 컴포넌트(직접제작)들 참조 */
 import News from "./pages/news";
+import Titanic from "./pages/titanic";
 
 const App = memo(() => {
   return (
@@ -27,11 +27,13 @@ const App = memo(() => {
       {/* ---- 링크 구성 부분 --- */}
       <nav>
         <MenuLink to="/news">뉴스목록</MenuLink>
+        <MenuLink to="/titanic">타이타닉</MenuLink>
       </nav>
 
       {/* ---- 페이지 역할을 할 컴포넌트를 명시하기 --- */}
       <Routes>
         <Route path="/news/*" element={<News />} />
+        <Route path="/titanic" element={<Titanic />} />
       </Routes>
     </>
   );
