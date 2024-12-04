@@ -32,7 +32,7 @@ const Titanic = memo(() => {
 
       try {
         // 인위적으로 지연 시간을 추가
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
 
         data = await axiosHelper.get("/titanic");
         console.log(data);
@@ -53,6 +53,7 @@ const Titanic = memo(() => {
     <TitanicContainer>
       <h2>Titanic</h2>
 
+      {/* 로딩바 */}
       <Spinner loading={loading} />
 
       <Table>
