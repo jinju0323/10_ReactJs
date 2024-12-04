@@ -111,7 +111,7 @@ const Department = memo(() => {
 
       {/* 검색폼 */}
       <form className="form-container" onSubmit={onSearchSubmit}>
-        <input type="text" name="keyword" />
+        <input type="text" name="keyword" defaultValue={keyword} />
         <button type="submit">검색</button>
       </form>
 
