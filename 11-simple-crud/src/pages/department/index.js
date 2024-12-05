@@ -162,6 +162,10 @@ const Department = memo(() => {
       // 2) 현재 출력되고 있는 상태변수(배열)에 백엔드로부터 받은 신규 데이터만 추가한다.
       // 주의 : 비동기 처리를 위한 async 함수 내부에서는 상태값을 직접 변경할 수 없다.
       // setDepartment((current) => [date.item, ...current]);
+
+      // date.item 배열과 department 배열을 결합하여 새로운 배열을 생성
+      // 새로운 배열에 setDepartment 함수를 통해 상태로 설정
+      // --> date.item 배열은 첫 번째 요소로 추가, department 배열의 요소들은 개별적으로 추가
       const newData = [date.item, ...department];
       setDepartment(newData);
     })();
