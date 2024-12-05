@@ -161,14 +161,9 @@ const Department = memo(() => {
       // 1) Ajax로 백엔드에게 전체 목록을 다시 요청한다. --> 비효율적(네트워크 트래픽 낭비)
       // 2) 현재 출력되고 있는 상태변수(배열)에 백엔드로부터 받은 신규 데이터만 추가한다.
       // 주의 : 비동기 처리를 위한 async 함수 내부에서는 상태값을 직접 변경할 수 없다.
-      // --> 상태 변수 자체가 비동기로 관리되기 때문에 서로 다른 작업 공간을 사용하기 때문이다.
-      // --> 그러므로 함수형 업데이트를 사용하여 이전 상태값을 가져와서 변경처리를 해야한다.
-      // 상태변수에 대한 setter함수에 콜백함수를 전달하면, 현재 상태값이 콜백함수의 파라미터로 전달되고
-      // 콜백함수에서 리턴하는 값이 새로운 상태값으로 설정된다.
-      // setDepartment(function(current) {
-      //    return [date.item, ...current];
-      // });
-      setDepartment((current) => [date.item, ...current]);
+      // setDepartment((current) => [date.item, ...current]);
+      const newData = [date.item, ...department];
+      setDepartment(newData);
     })();
   }, []);
 
