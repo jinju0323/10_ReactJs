@@ -109,67 +109,113 @@ const Department = memo(() => {
   }, []);
 
   /** 데이터 추가 submit 이벤트 */
-  const onDataAddSubmit = useCallback((e) => {
-    e.preventDefault();
+  const onDataAddSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    // 이벤트가 발생한 폼 자신
-    const form = e.currentTarget;
+      // 이벤트가 발생한 폼 자신
+      const form = e.currentTarget;
 
-    // 입력값에 대한 유효성 검사
-    try {
-      regexHelper.value("#dname", "학과명을 입려하세요.");
-      regexHelper.maxLength("#dname", 20, "학과명은 20자 이내로 입력하세요.");
-      regexHelper.value("#loc", "학과위치를 입력하세요.");
-      regexHelper.maxLength("#loc", 20, "학과위치는 20자 이내로 입력하세요.");
-    } catch (e) {
-      alert(e.message);
-      e.element.focus();
-      return;
-    }
-
-    // 폼안의 input 태그에 name속성으로 접근하여 입력값 취득
-    const dname = form.dname.value;
-    const loc = form.loc.value;
-
-    // Ajax를 통한 데이터 저장 요청 --> POST 방식
-    (async () => {
-      // Ajax 로딩 시작을 알림 --> 함수형 업데이트
-      setLoading(true);
-
-      // ajax 요청 결과를 저장할 변수 준비
-      let date = null;
-
+      // 입력값에 대한 유효성 검사
       try {
-        date = await axiosHelper.post("/department", {
-          dname: dname,
-          loc: loc,
-        });
-
-        console.group("데이터 저장 결과");
-        console.log(date);
-        console.groupEnd();
+        regexHelper.value("#dname", "학과명을 입려하세요.");
+        regexHelper.maxLength("#dname", 20, "학과명은 20자 이내로 입력하세요.");
+        regexHelper.value("#loc", "학과위치를 입력하세요.");
+        regexHelper.maxLength("#loc", 20, "학과위치는 20자 이내로 입력하세요.");
       } catch (e) {
-        console.error(e);
         alert(e.message);
+        e.element.focus();
         return;
-      } finally {
-        // Ajax 로딩 종료를 알림 --> 함수형 업데이트
-        setLoading((loading) => false);
       }
 
-      // 저장이 완료된 후에는 상태값을 갱신한다. --> 화면이 자동으로 갱신된다.
-      // 1) Ajax로 백엔드에게 전체 목록을 다시 요청한다. --> 비효율적(네트워크 트래픽 낭비)
-      // 2) 현재 출력되고 있는 상태변수(배열)에 백엔드로부터 받은 신규 데이터만 추가한다.
-      // 주의 : 비동기 처리를 위한 async 함수 내부에서는 상태값을 직접 변경할 수 없다.
-      // setDepartment((current) => [date.item, ...current]);
+      // 폼안의 input 태그에 name속성으로 접근하여 입력값 취득
+      const dname = form.dname.value;
+      const loc = form.loc.value;
 
-      // date.item 배열과 department 배열을 결합하여 새로운 배열을 생성
-      // 새로운 배열에 setDepartment 함수를 통해 상태로 설정
-      // --> date.item 배열은 첫 번째 요소로 추가, department 배열의 요소들은 개별적으로 추가
-      const newData = [date.item, ...department];
-      setDepartment(newData);
-    })();
-  }, []);
+      // Ajax를 통한 데이터 저장 요청 --> POST 방식
+      (async () => {
+        // Ajax 로딩 시작을 알림 --> 함수형 업데이트
+        setLoading(true);
+
+        // ajax 요청 결과를 저장할 변수 준비
+        let date = null;
+
+        try {
+          date = await axiosHelper.post("/department", {
+            dname: dname,
+            loc: loc,
+          });
+
+          console.group("데이터 저장 결과");
+          console.log(date);
+          console.groupEnd();
+        } catch (e) {
+          console.error(e);
+          alert(e.message);
+          return;
+        } finally {
+          // Ajax 로딩 종료를 알림 --> 함수형 업데이트
+          setLoading((loading) => false);
+        }
+
+        // 저장이 완료된 후에는 상태값을 갱신한다. --> 화면이 자동으로 갱신된다.
+        // 1) Ajax로 백엔드에게 전체 목록을 다시 요청한다. --> 비효율적(네트워크 트래픽 낭비)
+        // 2) 현재 출력되고 있는 상태변수(배열)에 백엔드로부터 받은 신규 데이터만 추가한다.
+        // 주의 : 비동기 처리를 위한 async 함수 내부에서는 상태값을 직접 변경할 수 없다.
+        // setDepartment((current) => [date.item, ...current]);
+
+        // date.item 배열과 department 배열을 결합하여 새로운 배열을 생성
+        // 새로운 배열에 setDepartment 함수를 통해 상태로 설정
+        // --> date.item 배열은 첫 번째 요소로 추가, department 배열의 요소들은 개별적으로 추가
+        const newData = [date.item, ...department];
+        setDepartment(newData);
+      })();
+    },
+    [department]
+  );
+
+  const onDataDeleteClick = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      // 이벤트가 발생한 버튼 자신
+      const button = e.currentTarget;
+      // 클릭된 자신에게 숨어 있는 data-id값을 추출
+      // --> 백엔드로부터 받아온 JSON 데이터의 id값에 따옴표가 적용되어 있지 않음 --> 숫자라는 의미
+      // --> parseInt() 함수를 통해 숫자로 변환
+      const id = parseInt(button.dataset.id);
+      const dname = button.dataset.dname;
+      console.log(`삭제 대상 : ${id}, ${dname}`);
+
+      if (!confirm(`${dname}을(를) 삭제하시겠습니까?`)) {
+        return;
+      }
+
+      // 삭제 요청을 위한 Ajax 처리
+      (async () => {
+        // Ajax 로딩 시작을 알림
+        setLoading(true);
+
+        try {
+          // 삭제의 경우 Ajax의 응답 결과가 필요 없다.
+          await axiosHelper.delete(`/department/${id}`);
+        } catch (e) {
+          console.error(e);
+          alert(e.message);
+          return;
+        } finally {
+          // Ajax 로딩 종료를 알림
+          setLoading(false);
+        }
+
+        // 백엔드에서 삭제되더라도 프론트가 갖고 있는 상태값은 복사본이므로
+        // 삭제 요청된 항목과 일치하는 데이터를 직접 찾아서 제거해야 한다.
+        const newData = department.filter((v, i) => v.id !== id);
+        setDepartment(newData);
+      })();
+    },
+    [department]
+  );
 
   return (
     <DepartmentContainer>
@@ -211,7 +257,11 @@ const Department = memo(() => {
                 )}
                 <td>{v.loc}</td>
                 <td>수정</td>
-                <td>삭제</td>
+                <td>
+                  <button type="button" data-id={v.id} data-dname={v.dname} onClick={onDataDeleteClick}>
+                    삭제
+                  </button>
+                </td>
               </tr>
             );
           })}
