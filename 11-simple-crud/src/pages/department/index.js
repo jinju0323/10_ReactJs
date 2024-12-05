@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import axiosHelper from "../../helpers/AxiosHelper";
 import utilHelper from "../../helpers/UtilHelper";
+import regexHelper from "../../helpers/RegexHelper";
 
 import Table from "../../components/Table";
 import Spinner from "../../components/Spinner";
@@ -17,7 +18,8 @@ const DepartmentContainer = styled.div`
     padding: 10px 0;
     margin: 0;
 
-    select {
+    input,
+    button {
       margin-right: 15px;
       font-size: 16px;
       padding: 5px 10px;
@@ -57,7 +59,10 @@ const Department = memo(() => {
       let date = null;
 
       // 검색어가 존재하는 경우
-      const args = {};
+      // json-server에 정렬 조건 설정하기
+      // -> ?_sort=컬럼&_order=asc|desc
+      const args = { _sort: "id", _order: "desc" };
+
       if (keyword) {
         args["dname_like"] = keyword;
       }
@@ -78,7 +83,7 @@ const Department = memo(() => {
 
       // Ajax의 요청 결과를 상태값에 저장
       // id 값을 기준으로 정렬
-      setDepartment(date.item.sort((a, b) => a.id - b.id));
+      setDepartment(date.item);
     })();
   }, [keyword]);
 
@@ -103,11 +108,81 @@ const Department = memo(() => {
     navigate(`/department?keyword=${keyword}`);
   }, []);
 
+  /** 데이터 추가 submit 이벤트 */
+  const onDataAddSubmit = useCallback((e) => {
+    e.preventDefault();
+
+    // 이벤트가 발생한 폼 자신
+    const form = e.currentTarget;
+
+    // 입력값에 대한 유효성 검사
+    try {
+      regexHelper.value("#dname", "학과명을 입려하세요.");
+      regexHelper.maxLength("#dname", 20, "학과명은 20자 이내로 입력하세요.");
+      regexHelper.value("#loc", "학과위치를 입력하세요.");
+      regexHelper.maxLength("#loc", 20, "학과위치는 20자 이내로 입력하세요.");
+    } catch (e) {
+      alert(e.message);
+      e.element.focus();
+      return;
+    }
+
+    // 폼안의 input 태그에 name속성으로 접근하여 입력값 취득
+    const dname = form.dname.value;
+    const loc = form.loc.value;
+
+    // Ajax를 통한 데이터 저장 요청 --> POST 방식
+    (async () => {
+      // Ajax 로딩 시작을 알림 --> 함수형 업데이트
+      setLoading(true);
+
+      // ajax 요청 결과를 저장할 변수 준비
+      let date = null;
+
+      try {
+        date = await axiosHelper.post("/department", {
+          dname: dname,
+          loc: loc,
+        });
+
+        console.group("데이터 저장 결과");
+        console.log(date);
+        console.groupEnd();
+      } catch (e) {
+        console.error(e);
+        alert(e.message);
+        return;
+      } finally {
+        // Ajax 로딩 종료를 알림 --> 함수형 업데이트
+        setLoading((loading) => false);
+      }
+
+      // 저장이 완료된 후에는 상태값을 갱신한다. --> 화면이 자동으로 갱신된다.
+      // 1) Ajax로 백엔드에게 전체 목록을 다시 요청한다. --> 비효율적(네트워크 트래픽 낭비)
+      // 2) 현재 출력되고 있는 상태변수(배열)에 백엔드로부터 받은 신규 데이터만 추가한다.
+      // 주의 : 비동기 처리를 위한 async 함수 내부에서는 상태값을 직접 변경할 수 없다.
+      // --> 상태 변수 자체가 비동기로 관리되기 때문에 서로 다른 작업 공간을 사용하기 때문이다.
+      // --> 그러므로 함수형 업데이트를 사용하여 이전 상태값을 가져와서 변경처리를 해야한다.
+      // 상태변수에 대한 setter함수에 콜백함수를 전달하면, 현재 상태값이 콜백함수의 파라미터로 전달되고
+      // 콜백함수에서 리턴하는 값이 새로운 상태값으로 설정된다.
+      // setDepartment(function(current) {
+      //    return [date.item, ...current];
+      // });
+      setDepartment((current) => [date.item, ...current]);
+    })();
+  }, []);
+
   return (
     <DepartmentContainer>
       <h2>Department</h2>
 
       <Spinner loading={loading} />
+      {/* 입력폼 */}
+      <form className="form-container" onSubmit={onDataAddSubmit}>
+        <input type="text" name="dname" id="dname" placeholder="학과명을 입력하세요" />
+        <input type="text" name="loc" id="loc" placeholder="학과위치를 입력하세요" />
+        <button type="submit">저장하기</button>
+      </form>
 
       {/* 검색폼 */}
       <form className="form-container" onSubmit={onSearchSubmit}>
