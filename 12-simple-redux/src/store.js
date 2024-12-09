@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import CounterSlice from "./slices/CounterSlice";
+import GradeSlice from "./slices/GradeSlice";
 
 const store = configureStore({
   // 리듀서 설정 --> Slice 객체들을 나열하여 설정
@@ -8,6 +9,7 @@ const store = configureStore({
   //           백엔드 URL 1개당 파일 하나씩 생성
   reducer: {
     CounterSlice,
+    GradeSlice,
   },
   // 직렬화 가능한 값을 체크하는 미들웨어를 사용하지 않는다. --> for Ajax
   middleware: (getDefaultMiddleware) =>
