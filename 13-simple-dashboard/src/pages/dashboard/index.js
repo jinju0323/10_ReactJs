@@ -17,32 +17,42 @@ const DashboardContainer = styled.div`
     justify-content: space-between;
 
     .my-counter {
-      width: 20%;
-      height: 150px;
-      background-color: #06f4;
+      margin: 0 10px;
+      width: 25%;
+      height: 140px;
+      background-color: #06f6;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
       h2 {
         font-size: 20px;
         font-weight: 600;
         margin: 0;
+        font-weight: normal;
+        color: #fff;
         margin-bottom: 10px;
       }
 
       .my-counter-number {
-        font-size: 40px;
+        font-size: 45px;
         font-weight: 700;
         margin: 0;
-      }
+        color: #fff;
 
-      .my-rate {
-        font-size: 40px;
-        font-weight: 700;
-        margin: 0;
+        &.per:after {
+          content: "%";
+        }
       }
     }
   }
@@ -130,17 +140,14 @@ const Dashboard = memo(() => {
         </div>
         <div className="my-counter">
           <h2>생존율</h2>
-          <div className="my-rate">
-            <CountUp
-              start={1} // 시작값
-              end={survivalRate} // 종료값
-              duration={5} // 3초동안 애니메이션 가동(기본값=2초)
-              enableScrollSpy // 스크롤 감지
-              scrollSpyDelay={1000} // 1초 후에 스크롤 감지
-              className="my-counter-number"
-            />
-            %
-          </div>
+          <CountUp
+            start={1} // 시작값
+            end={survivalRate} // 종료값
+            duration={5} // 3초동안 애니메이션 가동(기본값=2초)
+            enableScrollSpy // 스크롤 감지
+            scrollSpyDelay={1000} // 1초 후에 스크롤 감지
+            className="my-counter-number per"
+          />
         </div>
       </div>
 
