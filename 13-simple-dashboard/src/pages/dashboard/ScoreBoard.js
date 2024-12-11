@@ -1,20 +1,16 @@
-import React, { memo, useEffect, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 
 import styled from "styled-components";
 
 /** 리덕스 관련 */
 import { useSelector, useDispatch } from "react-redux";
-import { getList } from "../../slices/TitanicSlice";
 
 /** 컴포넌트 관련 */
-import Spinner from "../../components/Spinner";
 // https://www.npmjs.com/package/react-countup
-// import CountUp from "react-countup";
-import ScoreBoard from "./ScoreBoard";
-import GraphBoard from "./GraphBoard";
+import CountUp from "react-countup";
 
-const DashboardContainer = styled.div`
-  /* .counter-box {
+const ScoreBoardContainer = styled.div`
+  .counter-box {
     display: flex;
     justify-content: space-between;
 
@@ -57,59 +53,39 @@ const DashboardContainer = styled.div`
         }
       }
     }
-  } */
+  }
 `;
 
-const Dashboard = memo(() => {
+const ScoreBoard = memo(() => {
   /** 기본 데이터 처리 */
-  const { loading, status, message, item } = useSelector((state) => state.TitanicSlice);
+  // 백엔드로부터의 결과값만 필요하므로 나머지는 선언하지 않음
+  const { item } = useSelector((state) => state.TitanicSlice);
 
-  // dispatch 함수 생성
-  const dispatch = useDispatch();
+  /** 백엔드로부터 데이터를 받아온 후 필요한 집계 데이터 생성 */
+  const [totalPassenger, totalSurvived, totalDead, survivalRate] = useMemo(() => {
+    if (!item) {
+      return [0, 0, 0, 0];
+    }
 
-  // 컴포넌트가 마운트되면 데이터 조회를 위한 액션함수를 디스패치 함
-  useEffect(() => {
-    dispatch(getList());
-  }, []);
+    // 전체 탑승객 수 측정 (전체 길이 계산)
+    const totalPassenger = item.length;
 
-  // /** 백엔드로부터 데이터를 받아온 후 필요한 집계 데이터 생성 */
-  // const [totalPassenger, totalSurvived, totalDead, survivalRate] = useMemo(() => {
-  //   if (!item) {
-  //     return [0, 0, 0, 0];
-  //   }
+    // 전체 생존자 vs 사망자 수 측정 (json 데이터에서 survived가 true면 생존)
+    // filter 함수를 사용하여 생존자와 사망자를 구분한다.
+    const totalSurvived = item.filter((v, i) => v.survived).length;
 
-  //   // 전체 탑승객 수 측정 (전체 길이 계산)
-  //   const totalPassenger = item.length;
+    // 전체 사망자 수
+    const totalDead = totalPassenger - totalSurvived;
 
-  //   // 전체 생존자 vs 사망자 수 측정 (json 데이터에서 survived가 true면 생존)
-  //   // filter 함수를 사용하여 생존자와 사망자를 구분한다.
-  //   const totalSurvived = item.filter((v, i) => v.survived).length;
+    // 생존율 계산
+    const survivalRate = (totalSurvived / totalPassenger) * 100;
 
-  //   // 전체 사망자 수
-  //   const totalDead = totalPassenger - totalSurvived;
-
-  //   // 생존율 계산
-  //   const survivalRate = (totalSurvived / totalPassenger) * 100;
-
-  //   return [totalPassenger, totalSurvived, totalDead, survivalRate];
-  // }, [item]);
+    return [totalPassenger, totalSurvived, totalDead, survivalRate];
+  }, [item]);
 
   return (
-    <DashboardContainer>
-      <Spinner loading={loading} />
-
-      {status !== 200 && (
-        <div className="error-info">
-          <h1>{status}Error</h1>
-          <p>{message}</p>
-        </div>
-      )}
-
-      <ScoreBoard />
-
-      <GraphBoard />
-
-      {/* <div className="counter-box">
+    <ScoreBoardContainer>
+      <div className="counter-box">
         <div className="my-counter">
           <h2>전체 탑승객 수</h2>
           <CountUp
@@ -154,12 +130,9 @@ const Dashboard = memo(() => {
             className="my-counter-number per"
           />
         </div>
-      </div> */}
-
-      {/* JSON데이터 확인 (임시) */}
-      {/* {item && <p>{JSON.stringify(item)}</p>} */}
-    </DashboardContainer>
+      </div>
+    </ScoreBoardContainer>
   );
 });
 
-export default Dashboard;
+export default ScoreBoard;
