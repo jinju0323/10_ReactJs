@@ -10,6 +10,7 @@
 import React, { memo, useMemo } from "react";
 
 import styled from "styled-components";
+import mq from "../../components/MediaQuery";
 
 /** 리덕스 관련 */
 import { useSelector } from "react-redux";
@@ -36,12 +37,17 @@ Chart.register(CategoryScale, LinearScale, Title, Tooltip, Legend, BarElement);
 
 const Graph1Container = styled.div`
   /* background-color: #f001; */
-  flex: 1 0 50%;
+  width: 50%;
 
   .container {
-    background-color: #f001;
+    /* background-color: #f001; */
     margin: 10px;
+    height: 300px;
   }
+
+  ${mq.maxWidth("md")`
+      width: 100%;
+  `}
 `;
 
 const Graph1 = memo(() => {
@@ -53,6 +59,8 @@ const Graph1 = memo(() => {
     if (!item) {
       return { keys: null, values: null };
     }
+
+    console.group("Graph1");
 
     const ageData = item.reduce((acc, cur) => {
       const ageLevel = `${parseInt(cur.age / 10) * 10}대`;
@@ -76,6 +84,8 @@ const Graph1 = memo(() => {
 
     const result = { keys, values };
     console.log(result);
+
+    console.groupEnd();
 
     return result;
   }, [item]);
