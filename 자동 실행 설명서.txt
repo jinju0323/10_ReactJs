@@ -1,6 +1,8 @@
 1. React 프로젝트 자동 생성
 hossam-react-app {프로젝트 이름}
 
+https://github.com/leekh4232/hossam-react-app
+
 2. 백엔드 서버 가동
 hossam-server
 
