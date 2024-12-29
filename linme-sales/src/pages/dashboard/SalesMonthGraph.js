@@ -15,8 +15,8 @@ Chart.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend,
 const SalesMonthGraphContainer = styled.div`
   width: 100%;
 
-  .container {
-    height: 500px;
+  .sales-graph {
+    height: 300px;
   }
 
   ${mq.maxWidth("md")`
@@ -33,11 +33,7 @@ const SalesMonthGraph = memo(() => {
       return { salesDate: [], salesTotal: [] };
     }
 
-    const day = dayjs();
-    const now = day.format("YYYY-MM-DD");
-
-    // const filteredItems = monthly.filter((v) => v.salesDate < now && day.diff(dayjs(v.salesDate), "day") <= 30);
-
+    // monthly 데이터에서 salesDate와 salesTotal 배열 생성
     const salesDate = monthly.map((v) => v.salesDate);
     const salesTotal = monthly.map((v) => v.salesTotal);
 
@@ -45,16 +41,22 @@ const SalesMonthGraph = memo(() => {
     salesDate.reverse();
     salesTotal.reverse();
 
+    // 결과를 객체로 반환
     const result = { salesDate, salesTotal };
+
     return result;
   }, [monthly]);
+
   return (
     <SalesMonthGraphContainer>
-      <div className="container">
+      <div className="sales-graph">
+        {/* {salesDate && JSON.stringify(salesDate)} */}
+        {/* {salesTotal && JSON.stringify(salesTotal)} */}
+
         {salesDate && salesTotal && (
           <Line
             data={{
-              labels: ["3주전", "2주전", "1주전", "이번주"],
+              labels: salesDate,
               datasets: [
                 {
                   label: "원",

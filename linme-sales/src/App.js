@@ -21,8 +21,8 @@ const App = memo(() => {
       <Meta />
       {/* <Reset /> */}
       <GlobalStyles />
-      <h1>linme-sales</h1>
-      <hr />
+      <h1 style={{ textAlign: "center" }}>Linme Dashboard</h1>
+      {/* <hr /> */}
 
       {/* ---- 링크 구성 부분 --- */}
       <nav>{/* ToDo ...  */}</nav>

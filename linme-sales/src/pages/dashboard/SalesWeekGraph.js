@@ -15,8 +15,8 @@ Chart.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend,
 const SalesWeekGraphContainer = styled.div`
   width: 100%;
 
-  .container {
-    height: 500px;
+  .sales-graph {
+    height: 300px;
   }
 
   ${mq.maxWidth("md")`
@@ -33,13 +33,7 @@ const SalesWeekGraph = memo(() => {
       return { salesDate: [], salesTotal: [] };
     }
 
-    // 현재 날짜
-    const day = dayjs();
-    const now = day.format("YYYY-MM-DD");
-
-    // const filteredItems = weekly.filter((v) => v.salesDate < now && day.diff(dayjs(v.salesDate), "day") <= 7);
-
-    // 필터링된 데이터에서 salesDate와 salesTotal 배열을 생성
+    // weekly 데이터에서 salesDate와 salesTotal 배열 생성
     const salesDate = weekly.map((v) => v.salesDate);
     const salesTotal = weekly.map((v) => v.salesTotal);
 
@@ -55,7 +49,7 @@ const SalesWeekGraph = memo(() => {
 
   return (
     <SalesWeekGraphContainer>
-      <div className="container">
+      <div className="sales-graph">
         {/* {salesDate && JSON.stringify(salesDate)} */}
         {/* {salesTotal && JSON.stringify(salesTotal)} */}
 

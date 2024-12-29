@@ -35,6 +35,7 @@ const RAW_RUNTIME_STATE =
           ["chart.js", "npm:4.4.7"],\
           ["classnames", "npm:2.5.1"],\
           ["dayjs", "npm:1.11.13"],\
+          ["pretendard", "npm:1.3.9"],\
           ["prop-types", "npm:15.8.1"],\
           ["react", "npm:19.0.0"],\
           ["react-chartjs-2", "virtual:16600dd6bc565e0a4788e8a0150a6631394d7c831ef44a2130a51dbfbc0cfaac5c8121cd1369ae90a7285f6c8b6e8d797a3997f88f08aebb5f01d4e2e6ad2078#npm:5.2.0"],\
@@ -12535,6 +12536,7 @@ const RAW_RUNTIME_STATE =
           ["chart.js", "npm:4.4.7"],\
           ["classnames", "npm:2.5.1"],\
           ["dayjs", "npm:1.11.13"],\
+          ["pretendard", "npm:1.3.9"],\
           ["prop-types", "npm:15.8.1"],\
           ["react", "npm:19.0.0"],\
           ["react-chartjs-2", "virtual:16600dd6bc565e0a4788e8a0150a6631394d7c831ef44a2130a51dbfbc0cfaac5c8121cd1369ae90a7285f6c8b6e8d797a3997f88f08aebb5f01d4e2e6ad2078#npm:5.2.0"],\
@@ -15659,6 +15661,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../C:/Users/tlawl/AppData/Local/Yarn/Berry/cache/prelude-ls-npm-1.2.1-3e4d272a55-10c0.zip/node_modules/prelude-ls/",\
         "packageDependencies": [\
           ["prelude-ls", "npm:1.2.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["pretendard", [\
+      ["npm:1.3.9", {\
+        "packageLocation": "../../../../C:/Users/tlawl/AppData/Local/Yarn/Berry/cache/pretendard-npm-1.3.9-760c0fa60e-10c0.zip/node_modules/pretendard/",\
+        "packageDependencies": [\
+          ["pretendard", "npm:1.3.9"]\
         ],\
         "linkType": "HARD"\
       }]\
