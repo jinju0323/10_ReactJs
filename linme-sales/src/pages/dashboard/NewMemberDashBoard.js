@@ -76,7 +76,7 @@ const NewMemberDashboard = memo(() => {
 
         {/* 신규회원 그래프 */}
         <div className="NewMember-info">
-          <span className="title">📌 신규회원 그래프</span>
+          <span className="title">📌 신규 회원 추이 그래프</span>
           {/* 라디오 버튼을 사용하여 그래프 선택 */}
           <div className="graph-select">
             기간 설정 :&nbsp;

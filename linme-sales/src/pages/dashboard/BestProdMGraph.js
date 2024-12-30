@@ -35,7 +35,10 @@ const BestProdMGraph = memo(() => {
       return { productName: [], orderCount: [] };
     }
 
-    const productName = monthly.map((v) => (v.productName.length > 15 ? v.productName.substr(0, 15) + "..." : v.productName));
+    const productName = monthly.map((v) => {
+      const name = v.productName.replace(/_.*$/, "").replace(/\[.*?\]/g, "");
+      return name.length > 15 ? name.substring(0, 15) : name;
+    });
     const orderCount = monthly.map((v) => v.orderCount);
 
     return { productName, orderCount };

@@ -7,13 +7,13 @@ import mq from "../../components/MediaQuery";
 
 /** 리덕스 관련 */
 import { useDispatch, useSelector } from "react-redux";
-import { getList } from "../../slices/BestProductsSlice";
+import { getList } from "../../slices/ProfitSlice";
 
 /** 개별 그래프 가져오기 */
-import BestProdMGraph from "./BestProdMGraph";
-import BestProdWGraph from "./BestProdWGraph";
+import ProfitWGraph from "./ProfitWGraph";
+import ProfitMGraph from "./ProfitMGraph";
 
-const BestProdDashBoardContainer = styled.div`
+const ProfitDashboardContainer = styled.div`
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
@@ -53,9 +53,9 @@ const BestProdDashBoardContainer = styled.div`
   }
 `;
 
-const BestProdDashBoard = memo(() => {
-  /** 기본데이터 처리 */
-  const { loading, monthly, weekly } = useSelector((state) => state.BestProductsSlice);
+const ProfitDashboard = memo(() => {
+  /** 기본 데이터 처리 */
+  const { loading, weekly, monthly } = useSelector((state) => state.ProfitSlice);
 
   const dispatch = useDispatch();
 
@@ -69,29 +69,28 @@ const BestProdDashBoard = memo(() => {
   const handleGraphChange = (e) => {
     setSelectedGraph(e.target.value);
   };
-
   return (
-    <BestProdDashBoardContainer>
+    <ProfitDashboardContainer>
       <div className="prod-container">
-        {/* /* 인기상품 그래프 */}
+        {/* /* 판매량 그래프 */}
         <div className="prod-info">
-          <span className="title">📌 인기 상품 순위 그래프</span>
+          <span className="title">📌 카테고리별 판매 비중 그래프</span>
           {/* 드롭다운 형식으로 선택 */}
           <div className="graph-select">
             기간 설정 :&nbsp;
             <select value={selectedGraph} onChange={handleGraphChange}>
-              <option value="monthly">월 Top10</option>
-              <option value="weekly">주 TOP5</option>
+              <option value="monthly">월 판매량</option>
+              <option value="weekly">주 판매량</option>
             </select>
           </div>
 
           {/* 선택된 그래프를 조건부로 렌더링 */}
-          {selectedGraph === "monthly" && <BestProdMGraph />}
-          {selectedGraph === "weekly" && <BestProdWGraph />}
+          {selectedGraph === "monthly" && <ProfitMGraph />}
+          {selectedGraph === "weekly" && <ProfitWGraph />}
         </div>
       </div>
-    </BestProdDashBoardContainer>
+    </ProfitDashboardContainer>
   );
 });
 
-export default BestProdDashBoard;
+export default ProfitDashboard;

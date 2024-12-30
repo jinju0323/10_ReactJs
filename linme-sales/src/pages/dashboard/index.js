@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SalesDashboard from "./SalesDashboard";
 import BestProdDashBoard from "./BestProdDashBoard";
 import NewMemberDashBoard from "./NewMemberDashBoard";
+import ProfitDashboard from "./ProfitDashboard";
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ const Dashboard = memo(() => {
       <BestProdDashBoard />
 
       {/* 4. 카테고리별 판매 비중 (1개월 간의 주별/1주일 간의 일별) */}
+      <ProfitDashboard />
     </DashboardContainer>
   );
 });
