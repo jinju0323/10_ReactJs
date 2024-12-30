@@ -7,23 +7,23 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 /** 개별 그래프 가져오기 */
-import { getList } from "../../slices/SalesSlice";
-import SalesWeekGraph from "./SalesWeekGraph";
-import SalesMonthGraph from "./SalesMonthGraph";
+import { getList } from "../../slices/NewMemberSlice";
+import NewMemberWGraph from "./NewMemberWGraph";
+import NewMemberMGraph from "./NewMemberMGraph";
 
-const SalesDashboardContainer = styled.div`
+const NewMemberDashboardContainer = styled.div`
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
   width: 50%;
 
-  .sales-container {
+  .NewMember-container {
     padding: 20px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     width: 100%;
 
-    .sales-info {
+    .NewMember-info {
       width: 100%;
       text-align: center;
 
@@ -51,9 +51,9 @@ const SalesDashboardContainer = styled.div`
   }
 `;
 
-const SalesDashboard = memo(() => {
+const NewMemberDashboard = memo(() => {
   /** 기본 데이터 처리 */
-  const { weekly, monthly } = useSelector((state) => state.SalesSlice);
+  const { weekly, monthly } = useSelector((state) => state.NewMemberSlice);
 
   const dispatch = useDispatch();
 
@@ -69,14 +69,14 @@ const SalesDashboard = memo(() => {
   };
 
   return (
-    <SalesDashboardContainer>
-      <div className="sales-container">
+    <NewMemberDashboardContainer>
+      <div className="NewMember-container">
         {/* JSON데이터 확인 (임시) */}
         {/* {weekly && <p>{JSON.stringify(weekly)}</p>} */}
 
-        {/* 총 매출 그래프 */}
-        <div className="sales-info">
-          <span className="title">📌 총 매출 그래프</span>
+        {/* 신규회원 그래프 */}
+        <div className="NewMember-info">
+          <span className="title">📌 신규회원 그래프</span>
           {/* 라디오 버튼을 사용하여 그래프 선택 */}
           <div className="graph-select">
             기간 설정 :&nbsp;
@@ -87,17 +87,17 @@ const SalesDashboard = memo(() => {
           </div>
 
           {/* 선택된 그래프를 조건부로 렌더링 */}
-          {selectedGraph === "week" && <SalesWeekGraph />}
-          {selectedGraph === "month" && <SalesMonthGraph />}
+          {selectedGraph === "week" && <NewMemberWGraph />}
+          {selectedGraph === "month" && <NewMemberMGraph />}
 
           {/* 주간 그래프 */}
-          {/* <SalesWeekGraph /> */}
+          {/* <NewMemberWGraph /> */}
           {/* 월간 그래프 */}
-          {/* <SalesMonthGraph /> */}
+          {/* <NewMemberMGraph /> */}
         </div>
       </div>
-    </SalesDashboardContainer>
+    </NewMemberDashboardContainer>
   );
 });
 
-export default SalesDashboard;
+export default NewMemberDashboard;
